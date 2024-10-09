@@ -65,3 +65,54 @@ def get_user_by_id(user_id):
     }
 
     return jsonify(user_data), 200
+
+@api_blueprint.route('/user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    """
+    Met à jour les informations de l'utilisateur spécifiées dans la requête.
+    """
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "Utilisateur non trouvé"}), 404
+
+    # Récupérer les données de la requête JSON
+    data = request.get_json()
+
+    # Mettre à jour les champs spécifiés
+    if "firstname" in data:
+        user.firstname = data["firstname"]
+    if "lastname" in data:
+        user.lastname = data["lastname"]
+    if "password" in data:
+        user.password = data["password"]
+    if "birth_date" in data:
+        user.birth_date = data["birth_date"]
+    if "weight" in data:
+        user.weight = data["weight"]
+    if "height" in data:
+        user.height = data["height"]
+    if "gender" in data:
+        user.gender = data["gender"]
+    if "digital_print" in data:
+        user.digitalprint = data["digital_print"]
+    if "eye_color" in data:
+        user.eye_color = data["eye_color"]
+    if "photo_identity" in data:
+        user.photo_identity = data["photo_identity"]
+    if "id_address" in data:
+        user.id_address = data["id_address"]
+    if "mutual_name" in data:
+        user.mutual_name = data["mutual_name"]
+    if "social_security_number" in data:
+        user.social_security_number = data["social_security_number"]
+    if "additional_infos" in data:
+        user.additional_infos = data["additional_infos"]
+
+    # Sauvegarder les modifications dans la base de données
+    try:
+        db.session.commit()
+        return jsonify({"message": "Utilisateur mis à jour avec succès"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
