@@ -17,7 +17,6 @@ def init_db(app):
     test_db_connection(app)
 
 
-
 def test_db_connection(app):
     with app.app_context():
         try:

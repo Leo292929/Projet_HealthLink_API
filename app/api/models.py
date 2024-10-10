@@ -3,6 +3,7 @@ from app.extensions import db
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
+    healthlink_number = db.Column(db.Integer)
     firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)

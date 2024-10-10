@@ -4,12 +4,12 @@ from .models import User, Handicap, Treatment, Vaccination, HealthFolder, Addres
 
 api_blueprint = Blueprint('api', __name__)
 
-@api_blueprint.route('/user/<int:user_id>', methods=['GET'])
-def get_user_by_id(user_id):
+@api_blueprint.route('/user/<int:healthlink_number>', methods=['GET'])
+def get_user_by_hn(healthlink_number):
     """
     Récupère les informations de l'utilisateur ainsi que les données associées par ID.
     """
-    user = User.query.get(user_id)
+    user = User.query.filter_by(healthlink_number=healthlink_number).first()
     
     if not user:
         return jsonify({"error": "Utilisateur non trouvé"}), 404
@@ -17,6 +17,7 @@ def get_user_by_id(user_id):
     # Récupérer les informations de l'utilisateur
     user_data = {
         "id": user.id,
+        "healthlink_number":user.healthlink_number,
         "firstname": user.firstname,
         "lastname": user.lastname,
         "birth_date": user.birth_date,
