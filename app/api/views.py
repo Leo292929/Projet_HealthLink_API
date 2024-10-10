@@ -117,3 +117,28 @@ def update_user(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+
+
+
+@api_blueprint.route('/pro/<int:pro_id>', methods=['GET'])
+def get_pro_by_id(pro_id):
+    """
+    Récupère les informations du professionnel de santé par son ID.
+    """
+    pro = Pro.query.filter_by(id=pro_id).first()
+    
+    if not pro:
+        return jsonify({"error": "Professionnel de santé non trouvé"}), 404
+
+    # Récupérer les informations du professionnel
+    pro_data = {
+        "id": pro.id,
+        "category": pro.category,
+        "rpps_number": pro.rpps_number,
+        "firstname": pro.firstname,
+        "lastname": pro.lastname,
+       
+    }
+
+    return jsonify(pro_data), 200
